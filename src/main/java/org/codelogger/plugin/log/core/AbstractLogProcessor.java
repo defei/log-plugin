@@ -1,4 +1,4 @@
-package org.codelogger.plugin.log.filter;
+package org.codelogger.plugin.log.core;
 
 
 import java.io.IOException;
@@ -32,14 +32,14 @@ public abstract class AbstractLogProcessor {
      *
      * @return true, 开启记录
      */
-    protected abstract boolean isRequestLogEnable();
+    public abstract boolean isRequestLogEnable();
 
     /**
      * 是否开启响应记录
      *
      * @return true, 开启记录
      */
-    protected abstract boolean isResponseLogEnable();
+    public abstract boolean isResponseLogEnable();
 
     /**
      * 获取不记录的日志的Url正则表达式

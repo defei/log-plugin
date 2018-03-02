@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.codelogger.plugin.log.filter.LogHttpServletResponse;
+import org.codelogger.plugin.log.core.LogHttpServletResponse;
 import org.codelogger.plugin.log.util.StringUtils;
 import org.codelogger.plugin.log.util.WebUtil;
 

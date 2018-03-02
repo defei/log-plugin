@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codelogger.plugin.log.bean.LogProcessResponse;
+import org.codelogger.plugin.log.core.AbstractLogProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package org.codelogger.plugin.log.filter;
+package org.codelogger.plugin.log.core;
 
 import java.io.IOException;
 import java.io.OutputStream;
