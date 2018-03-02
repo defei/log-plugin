@@ -7,18 +7,18 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codelogger.plugin.log.bean.LogProcessResponse;
-import org.codelogger.plugin.log.util.StringUtils;
-import org.codelogger.plugin.log.util.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * 日志处理器，主要是包装请和返回
+ *
  * @author defei
  * @data 3/1/18.
  */
-public abstract class LogProcessor {
+public abstract class AbstractLogProcessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractLogProcessor.class);
 
     /**
      * 请求内容字符编码
@@ -53,13 +53,9 @@ public abstract class LogProcessor {
     /**
      * 记录日志
      *
-     * @param httpMethod http请求方法
-     * @param requestURI 请求的uri
-     * @param queryString 请求的参数
-     * @param requestBody 请求的内容
-     * @param responseBody 请求返回结果
+     * @param logProcessResponse http请求方法
      */
-    protected abstract void log(String httpMethod, String requestURI, String queryString, String requestBody, String responseBody);
+    protected abstract void log(LogProcessResponse logProcessResponse);
 
     public LogProcessResponse process(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 
@@ -68,12 +64,12 @@ public abstract class LogProcessor {
         boolean requestLogEnable = isRequestLogEnable();
         boolean responseLogEnable = isResponseLogEnable();
         if (!(requestLogEnable || responseLogEnable)) {
-            return new LogProcessResponse(request, response);
+            return new LogProcessResponse(request, response, getCharsetName());
         }
         Pattern ignoreUrls = getIgnoreUrls();
         if (ignoreUrls != null) {
             if (ignoreUrls.matcher(httpRequest.getRequestURI()).matches()) {
-                return new LogProcessResponse(request, response);
+                return new LogProcessResponse(request, response, getCharsetName());
             }
         }
         if (requestLogEnable) {
@@ -94,21 +90,21 @@ public abstract class LogProcessor {
         if (responseLogEnable) {
             response = new LogHttpServletResponse(httpResponse);
         }
-        LogProcessResponse logProcessResponse = new LogProcessResponse(request, response);
+        LogProcessResponse logProcessResponse = new LogProcessResponse(request, response, getCharsetName());
         doThisBeforeLog(logProcessResponse);
         String requestBody = null;
         if (requestLogEnable) {
-            requestBody = StringUtils.replaceCRLF(WebUtil.getBody(request, getCharsetName()));
+            requestBody = logProcessResponse.getRequestBody();
         }
         String responseBody = null;
         if (responseLogEnable) {
-            responseBody = StringUtils.replaceCRLF(new String(((LogHttpServletResponse) response).getBody(), getCharsetName()));
+            responseBody = logProcessResponse.getResponseBody();
         }
         if (logger.isTraceEnabled()) {
             logger.trace("Request by[{}] [url]:{}, [queryString]:{}, requestBody:{}, responseBody:{}.", httpRequest.getMethod(),
                     httpRequest.getRequestURI(), httpRequest.getQueryString(), requestBody, responseBody);
         }
-        log(httpRequest.getMethod(), httpRequest.getRequestURI(), httpRequest.getQueryString(), requestBody, responseBody);
+        log(logProcessResponse);
         return logProcessResponse;
     }
 

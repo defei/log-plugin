@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultLogFilter implements Filter {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractLogProcessor.class);
 
     private Pattern ignoreUrls = Pattern.compile("/|/+.*(html)$|/+heartbeat.*|/+webjars.*|/+swagger.*|/+v\\d/api-docs.*|/+css.*|/+js.*|/+favicon.ico");
 
@@ -27,7 +27,7 @@ public class DefaultLogFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
 
-        final LogProcessor logProcessor = new LogProcessor() {
+        final AbstractLogProcessor abstractLogProcessor = new AbstractLogProcessor() {
             @Override
             public String getCharsetName() {
                 return "UTF-8";
@@ -58,14 +58,14 @@ public class DefaultLogFilter implements Filter {
             }
 
             @Override
-            public void log(String httpMethod, String requestURI, String queryString, String requestBody, String responseBody) {
+            public void log(LogProcessResponse logProcessResponse) {
 
                 logger.debug("Request [method]:{}, [url]:{}, [queryString]:{}, requestBody:{}, [responseBody]:{}",
-                        httpMethod, requestURI, queryString, requestBody, responseBody);
+                        logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(), logProcessResponse.getQueryString(), logProcessResponse.getResponseBody(), logProcessResponse.getResponseBody());
             }
         };
-        LogProcessResponse processResponse = logProcessor.process((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
-        if (!(logProcessor.isResponseLogEnable() || logProcessor.isResponseLogEnable())) {
+        LogProcessResponse processResponse = abstractLogProcessor.process((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
+        if (!(abstractLogProcessor.isResponseLogEnable() || abstractLogProcessor.isResponseLogEnable())) {
             filterChain.doFilter(processResponse.getHttpServletRequest(), processResponse.getHttpServletResponse());
         }
     }
