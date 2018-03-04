@@ -48,6 +48,11 @@ public abstract class AbstractLogProcessor {
      */
     protected abstract Pattern getIgnoreUrls();
 
+    /**
+     * 在记录日志之前执行一次该方法
+     *
+     * @param logProcessResponse 请求处理后的结果
+     */
     protected abstract void doThisBeforeLog(LogProcessResponse logProcessResponse);
 
     /**

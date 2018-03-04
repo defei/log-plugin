@@ -2,6 +2,7 @@ package org.codelogger.plugin.log.bean;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codelogger.plugin.log.core.LogHttpServletResponse;
@@ -77,10 +78,29 @@ public class LogProcessResponse {
      */
     public String getRequestBody() {
         try {
-            return StringUtils.replaceCRLF(WebUtil.getBody(getHttpServletRequest(), this.charsetName));
+            String body = StringUtils.replaceCRLF(WebUtil.getBody(getHttpServletRequest(), this.charsetName));
+            return body == null ? null : body.trim().length() == 0 ? "" : body;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 获取请求参数Map
+     *
+     * @return 请求参数Map
+     */
+    public Map getRequestParameterMap() {
+        return getHttpServletRequest().getParameterMap();
+    }
+
+    /**
+     * {@link WebUtil#getClientIP(HttpServletRequest)}
+     *
+     * @return 客户端请求ip
+     */
+    public String getRequestClientIp() {
+        return WebUtil.getClientIP(getHttpServletRequest());
     }
 
     /**
@@ -90,7 +110,8 @@ public class LogProcessResponse {
      */
     public String getResponseBody() {
         try {
-            return StringUtils.replaceCRLF(new String(((LogHttpServletResponse) getHttpServletResponse()).getBody(), this.charsetName));
+            String body = StringUtils.replaceCRLF(new String(((LogHttpServletResponse) getHttpServletResponse()).getBody(), this.charsetName));
+            return body == null ? null : body.trim().length() == 0 ? "" : body;
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
