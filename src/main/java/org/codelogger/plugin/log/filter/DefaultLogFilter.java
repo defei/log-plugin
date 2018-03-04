@@ -61,12 +61,15 @@ public class DefaultLogFilter implements Filter {
             @Override
             public void log(LogProcessResponse logProcessResponse) {
 
-                logger.debug("Request [method]:{}, [url]:{}, [queryString]:{}, requestBody:{}, [responseBody]:{}",
-                        logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(), logProcessResponse.getQueryString(), logProcessResponse.getResponseBody(), logProcessResponse.getResponseBody());
+                logger.debug("Request [method]:{}, [url]:{}, [queryString]:{}, requestBody:{}, requestIP:{} [responseBody]:{}",
+                        logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(),
+                        logProcessResponse.getQueryString(), logProcessResponse.getRequestBody(),
+                        logProcessResponse.getRequestClientIp(), logProcessResponse.getResponseBody());
             }
         };
         LogProcessResponse processResponse = abstractLogProcessor.process((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
-        if (!(abstractLogProcessor.isResponseLogEnable() || abstractLogProcessor.isResponseLogEnable())) {
+        Boolean needDoFilter = processResponse.getSkipped() || !(abstractLogProcessor.isRequestLogEnable() || abstractLogProcessor.isResponseLogEnable());
+        if (needDoFilter) {
             filterChain.doFilter(processResponse.getHttpServletRequest(), processResponse.getHttpServletResponse());
         }
     }

@@ -62,6 +62,13 @@ public abstract class AbstractLogProcessor {
      */
     protected abstract void log(LogProcessResponse logProcessResponse);
 
+    /**
+     * 处理请求和响应
+     * @param httpRequest http请求
+     * @param httpResponse http响应
+     * @return 处理结果
+     * @throws IOException io问题
+     */
     public LogProcessResponse process(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 
         HttpServletRequest request = httpRequest;
@@ -69,12 +76,12 @@ public abstract class AbstractLogProcessor {
         boolean requestLogEnable = isRequestLogEnable();
         boolean responseLogEnable = isResponseLogEnable();
         if (!(requestLogEnable || responseLogEnable)) {
-            return new LogProcessResponse(request, response, getCharsetName());
+            return new LogProcessResponse(request, response, getCharsetName(), true);
         }
         Pattern ignoreUrls = getIgnoreUrls();
         if (ignoreUrls != null) {
             if (ignoreUrls.matcher(httpRequest.getRequestURI()).matches()) {
-                return new LogProcessResponse(request, response, getCharsetName());
+                return new LogProcessResponse(request, response, getCharsetName(), true);
             }
         }
         if (requestLogEnable) {
@@ -95,7 +102,7 @@ public abstract class AbstractLogProcessor {
         if (responseLogEnable) {
             response = new LogHttpServletResponse(httpResponse);
         }
-        LogProcessResponse logProcessResponse = new LogProcessResponse(request, response, getCharsetName());
+        LogProcessResponse logProcessResponse = new LogProcessResponse(request, response, getCharsetName(), false);
         doThisBeforeLog(logProcessResponse);
         String requestBody = null;
         if (requestLogEnable) {

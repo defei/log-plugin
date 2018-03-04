@@ -15,19 +15,25 @@ import org.codelogger.plugin.log.util.WebUtil;
  */
 public class LogProcessResponse {
 
+    /**
+     * 是否在忽略列表中
+     */
+    private Boolean isSkipped = false;
+
     private String charsetName;
 
     private HttpServletRequest httpServletRequest;
 
     private HttpServletResponse httpServletResponse;
 
-    public LogProcessResponse(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String charsetName) {
-        if (httpServletRequest == null || httpServletResponse == null || charsetName == null) {
-            throw new IllegalArgumentException("Argument httpServletRequest and httpServletResponse and charsetName can not be null.");
+    public LogProcessResponse(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, String charsetName, Boolean isSkipped) {
+        if (httpServletRequest == null || httpServletResponse == null || charsetName == null || isSkipped == null) {
+            throw new IllegalArgumentException("Argument httpServletRequest and httpServletResponse and charsetName and isSkipped can not be null.");
         }
         this.httpServletRequest = httpServletRequest;
         this.httpServletResponse = httpServletResponse;
         this.charsetName = charsetName;
+        this.isSkipped = isSkipped;
     }
 
     /**
@@ -115,5 +121,12 @@ public class LogProcessResponse {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * {@linkplain LogProcessResponse#isSkipped}
+     */
+    public Boolean getSkipped() {
+        return isSkipped;
     }
 }
