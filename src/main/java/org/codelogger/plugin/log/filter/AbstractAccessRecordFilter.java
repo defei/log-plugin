@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author defei
- * @data 3/2/18.
  */
 public abstract class AbstractAccessRecordFilter implements Filter {
 

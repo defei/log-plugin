@@ -11,7 +11,6 @@ import org.codelogger.plugin.log.util.WebUtil;
 
 /**
  * @author defei
- * @data 3/1/18.
  */
 public class LogProcessResponse {
 
@@ -38,6 +37,7 @@ public class LogProcessResponse {
 
     /**
      * {@linkplain LogProcessResponse#httpServletRequest}
+     * @return request of processed
      */
     public HttpServletRequest getHttpServletRequest() {
         return httpServletRequest;
@@ -45,6 +45,7 @@ public class LogProcessResponse {
 
     /**
      * {@linkplain LogProcessResponse#httpServletResponse}
+     * @return response of processed
      */
     public HttpServletResponse getHttpServletResponse() {
         return httpServletResponse;
@@ -125,6 +126,7 @@ public class LogProcessResponse {
 
     /**
      * {@linkplain LogProcessResponse#isSkipped}
+     * @return true if skipped all process
      */
     public Boolean getSkipped() {
         return isSkipped;

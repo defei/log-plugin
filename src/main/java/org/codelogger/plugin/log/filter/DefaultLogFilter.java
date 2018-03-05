@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author defei
- * @data 3/1/18.
  */
 public class DefaultLogFilter implements Filter {
 

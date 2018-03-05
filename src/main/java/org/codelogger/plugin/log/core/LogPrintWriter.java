@@ -4,7 +4,6 @@ import java.io.*;
 
 /**
  * @author defei
- * @data 3/1/18.
  */
 public class LogPrintWriter extends PrintWriter {
 

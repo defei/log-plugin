@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  * 默认
  *
  * @author defei
- * @data 3/4/18.
  */
 public class DefaultAccessRecordFilter extends AbstractAccessRecordFilter {
 

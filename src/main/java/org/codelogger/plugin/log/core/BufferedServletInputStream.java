@@ -6,7 +6,6 @@ import javax.servlet.ServletInputStream;
 
 /**
  * @author defei
- * @data 1/11/18.
  */
 public class BufferedServletInputStream extends ServletInputStream {
 

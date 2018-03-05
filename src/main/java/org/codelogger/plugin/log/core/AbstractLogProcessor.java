@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
  * 日志处理器，主要是包装请和返回
  *
  * @author defei
- * @data 3/1/18.
  */
 public abstract class AbstractLogProcessor {
 

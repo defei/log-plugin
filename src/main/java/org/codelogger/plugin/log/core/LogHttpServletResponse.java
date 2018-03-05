@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * @author defei
- * @data 3/1/18.
  */
 public class LogHttpServletResponse extends HttpServletResponseWrapper {
 

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
  * @author defei
- * @data 1/11/18.
  */
 public class BufferedRequestWrapper extends HttpServletRequestWrapper {
 

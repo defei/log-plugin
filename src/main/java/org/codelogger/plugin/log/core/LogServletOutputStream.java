@@ -6,7 +6,6 @@ import javax.servlet.ServletOutputStream;
 
 /**
  * @author defei
- * @data 3/1/18.
  */
 public class LogServletOutputStream extends ServletOutputStream {
 
