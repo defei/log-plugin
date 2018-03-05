@@ -16,7 +16,7 @@ public class StringUtils {
     public static String mapToString(Map map) {
 
         if (map == null || map.isEmpty()) {
-            return "{}";
+            return null;
         }
         StringBuilder stringBuilder = new StringBuilder("{");
         Iterator iterator = map.entrySet().iterator();

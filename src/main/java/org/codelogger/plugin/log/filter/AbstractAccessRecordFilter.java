@@ -40,6 +40,14 @@ public abstract class AbstractAccessRecordFilter implements Filter {
      */
     public abstract void recordAccessLog(LogProcessResponse logProcessResponse);
 
+    /**
+     * 获取发起当前请求的用户
+     *
+     * @param httpServletRequest 请求
+     * @return user identity of current request
+     */
+    public abstract String getAccessUser(HttpServletRequest httpServletRequest);
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
