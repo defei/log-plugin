@@ -75,11 +75,10 @@ public abstract class AbstractAccessRecordFilter implements Filter {
             protected void log(LogProcessResponse logProcessResponse) {
 
                 if (logger.isTraceEnabled()) {
-                    logger.trace("Request [method]:{}, [url]:{}, [queryString]:{}, [parameterMap]:{}, requestId:{} requestBody:{}, [responseBody]:{}",
+                    logger.trace("Received {} to {} with queryString:{} and parameterMap:{} and requestBody:{} from ip:{}",
                             logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(),
                             logProcessResponse.getQueryString(), StringUtils.mapToString(logProcessResponse.getRequestParameterMap()),
-                            logProcessResponse.getRequestClientIp(), isRequestLogEnable() ? logProcessResponse.getRequestBody() : "",
-                            isResponseLogEnable() ? logProcessResponse.getResponseBody() : "");
+                            isRequestLogEnable() ? logProcessResponse.getRequestBody() : "null", logProcessResponse.getRequestClientIp());
                 }
             }
 

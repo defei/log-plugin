@@ -35,10 +35,10 @@ public class DefaultAccessRecordFilter extends AbstractAccessRecordFilter {
     public void recordAccessLog(LogProcessResponse logProcessResponse) {
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Received [method]:{}, [uri]:{}, [queryString]:{}, [parameterMap]:{}, [requestIP]:{} requestBody:{}",
+            logger.debug("Received {} to {} with queryString:{} and parameterMap:{} and requestBody:{} from ip:{}",
                     logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(),
                     logProcessResponse.getQueryString(), StringUtils.mapToString(logProcessResponse.getRequestParameterMap()),
-                    logProcessResponse.getRequestClientIp(), logProcessResponse.getRequestBody());
+                    logProcessResponse.getRequestBody(), logProcessResponse.getRequestClientIp());
         }
     }
 

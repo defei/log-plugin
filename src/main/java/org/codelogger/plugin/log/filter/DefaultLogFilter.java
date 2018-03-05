@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codelogger.plugin.log.bean.LogProcessResponse;
 import org.codelogger.plugin.log.core.AbstractLogProcessor;
+import org.codelogger.plugin.log.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,10 +62,11 @@ public class DefaultLogFilter implements Filter {
             @Override
             public void log(LogProcessResponse logProcessResponse) {
 
-                logger.debug("Request [method]:{}, [url]:{}, [queryString]:{}, requestBody:{}, requestIP:{} [responseBody]:{}",
+                logger.debug("Received {} to {} with queryString:{} and parameterMap:{} and requestBody:{} from ip:{}, responseBody:{}",
                         logProcessResponse.getHttpMethod(), logProcessResponse.getRequestURI(),
-                        logProcessResponse.getQueryString(), logProcessResponse.getRequestBody(),
-                        logProcessResponse.getRequestClientIp(), logProcessResponse.getResponseBody());
+                        logProcessResponse.getQueryString(), StringUtils.mapToString(logProcessResponse.getRequestParameterMap()),
+                        logProcessResponse.getRequestBody(), logProcessResponse.getRequestClientIp(),
+                        logProcessResponse.getResponseBody());
             }
         };
         LogProcessResponse processResponse = abstractLogProcessor.process((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
