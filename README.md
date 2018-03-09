@@ -18,9 +18,9 @@
 
 ---
 maven下载:
-`<dependency>
+> 
+<dependency>
     <groupId>org.codelogger.plugin</groupId>
     <artifactId>log</artifactId>
     <version>1.0.0</version>
 </dependency>
-`
