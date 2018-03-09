@@ -15,3 +15,12 @@
 当然，也可以自己实现一个Filter，继承于`org.codelogger.plugin.log.filter.AbstractAccessRecordFilter`，实现`org.codelogger.plugin.log.filter.AbstractAccessRecordFilter#recordAccessLog`方法，来处理访问请求的自定义记录。
 
 > **注意:`AbstractAccessRecordFilter`只会处理请求行为，而不会处理响应行为**
+
+---
+maven下载:
+`<dependency>
+    <groupId>org.codelogger.plugin</groupId>
+    <artifactId>log</artifactId>
+    <version>1.0.0</version>
+</dependency>
+`
