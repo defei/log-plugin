@@ -17,6 +17,21 @@ public class LogPrintWriter extends PrintWriter {
         this.bodyWriter = new OutputStreamWriter(bodyStream);
     }
 
+    /**
+     * Flushes the stream.
+     *
+     * @see #checkError()
+     */
+    @Override
+    public void flush() {
+        super.flush();
+        try {
+            bodyWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void write(String s) {
         // Don't permanently allocate very large buffers.
