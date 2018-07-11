@@ -16,6 +16,11 @@ public class LogPrintWriter extends PrintWriter {
     }
 
     @Override
+    public void write(String s) {
+        write(s, 0, s.length());
+    }
+
+    @Override
     public void write(char buf[], int off, int len) {
         super.write(buf, off, len);
         try {
