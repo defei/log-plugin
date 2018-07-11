@@ -7,6 +7,8 @@ import java.io.*;
  */
 public class LogPrintWriter extends PrintWriter {
 
+    private final int writeBufferSize = 1024;
+
     private OutputStreamWriter bodyWriter;
 
     LogPrintWriter(PrintWriter originalWriter, OutputStream bodyStream)
@@ -17,12 +19,19 @@ public class LogPrintWriter extends PrintWriter {
 
     @Override
     public void write(String s) {
-        write(s, 0, s.length());
+        // Don't permanently allocate very large buffers.
+        char[] dst = new char[s.length()];
+        s.getChars(0, s.length(), dst, 0);
+        write(dst, 0, s.length());
     }
 
     @Override
     public void write(char buf[], int off, int len) {
         super.write(buf, off, len);
+        writeToBodyWriter(buf, off, len);
+    }
+
+    private void writeToBodyWriter(char[] buf, int off, int len) {
         try {
             bodyWriter.write(buf, off, len);
         } catch (IOException e) {
