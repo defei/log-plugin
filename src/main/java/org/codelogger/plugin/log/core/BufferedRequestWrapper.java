@@ -1,6 +1,7 @@
 package org.codelogger.plugin.log.core;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.servlet.ServletInputStream;
@@ -12,21 +13,31 @@ import javax.servlet.http.HttpServletRequestWrapper;
  */
 public class BufferedRequestWrapper extends HttpServletRequestWrapper {
 
+    /**
+     * 1 KB
+     */
+    private static final int ONE_KILOBYTE_SIZE = 1024;
+
+    /**
+     * 32 KB
+     */
+    private static final int BUFFER_SIZE = ONE_KILOBYTE_SIZE * 32;
+
     private ByteArrayInputStream byteArrayInputStream;
 
     private BufferedServletInputStream bufferedServletInputStream;
 
-    private byte[] buffer;
+    protected byte[] buffer;
 
-    public BufferedRequestWrapper(HttpServletRequest req, int length) throws IOException {
+    public BufferedRequestWrapper(HttpServletRequest req) throws IOException {
         super(req);
         InputStream is = req.getInputStream();
-        buffer = new byte[length];
-
-        int pad = 0;
-        while (pad < length) {
-            pad += is.read(buffer, pad, length);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[BUFFER_SIZE];
+        for (int len; (len = is.read(buffer)) != -1; ) {
+            byteArrayOutputStream.write(buffer, 0, len);
         }
+        this.buffer = byteArrayOutputStream.toByteArray();
     }
 
     @Override

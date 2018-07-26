@@ -1,7 +1,9 @@
 package org.codelogger.plugin.log.util;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +19,11 @@ public class WebUtil {
     private static final String X_REAL_IP = "X-Real-IP";
 
     /**
+     * 1 KB
+     */
+    private static final int ONE_KILOBYTE_SIZE = 1024;
+
+    /**
      * 获取请求的输入流
      *
      * @param request http请求
@@ -28,14 +35,15 @@ public class WebUtil {
 
         int length = request.getContentLength();
         if (length > 0) {
-            InputStream is = request.getInputStream();
-            byte[] content = new byte[length];
-
-            int pad = 0;
-            while (pad < length) {
-                pad += is.read(content, pad, length);
+            byte[] buffer = new byte[ONE_KILOBYTE_SIZE];
+            ServletInputStream is = request.getInputStream();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            for (int len; (len = is.read(buffer)) != -1; ) {
+                byteArrayOutputStream.write(buffer, 0, len);
             }
-            return new String(content, charsetName);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            return new String(bytes, charsetName);
         }
         return null;
     }

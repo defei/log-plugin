@@ -86,16 +86,7 @@ public abstract class AbstractLogProcessor {
         if (requestLogEnable) {
             int length = httpRequest.getContentLength();
             if (length > 0) {
-                BufferedRequestWrapper bufferedRequest = new BufferedRequestWrapper(httpRequest, length);
-
-                InputStream is = bufferedRequest.getInputStream();
-                byte[] content = new byte[length];
-
-                int pad = 0;
-                while (pad < length) {
-                    pad += is.read(content, pad, length);
-                }
-                request = bufferedRequest;
+                request = new BufferedRequestWrapper(httpRequest);
             }
         }
         if (responseLogEnable) {
