@@ -2,11 +2,12 @@ package org.codelogger.plugin.log.core;
 
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.codelogger.plugin.log.bean.LogProcessResponse;
+import org.codelogger.plugin.log.util.WebUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +64,7 @@ public abstract class AbstractLogProcessor {
 
     /**
      * 处理请求和响应
+     *
      * @param httpRequest http请求
      * @param httpResponse http响应
      * @return 处理结果
@@ -109,5 +111,6 @@ public abstract class AbstractLogProcessor {
         log(logProcessResponse);
         return logProcessResponse;
     }
+
 
 }

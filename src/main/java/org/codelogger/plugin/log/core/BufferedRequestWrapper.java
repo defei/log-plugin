@@ -7,6 +7,7 @@ import java.io.InputStream;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import org.codelogger.plugin.log.util.WebUtil;
 
 /**
  * @author defei
@@ -30,24 +31,32 @@ public class BufferedRequestWrapper extends HttpServletRequestWrapper {
     protected byte[] buffer;
 
     public BufferedRequestWrapper(HttpServletRequest req) throws IOException {
+
         super(req);
-        InputStream is = req.getInputStream();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[BUFFER_SIZE];
-        for (int len; (len = is.read(buffer)) != -1; ) {
-            byteArrayOutputStream.write(buffer, 0, len);
+        if (WebUtil.isPost(req) && !WebUtil.isMultipartContent(req)) {
+            InputStream is = req.getInputStream();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[BUFFER_SIZE];
+            for (int len; (len = is.read(buffer)) != -1; ) {
+                byteArrayOutputStream.write(buffer, 0, len);
+            }
+            this.buffer = byteArrayOutputStream.toByteArray();
         }
-        this.buffer = byteArrayOutputStream.toByteArray();
     }
 
     @Override
-    public ServletInputStream getInputStream() {
-        try {
-            byteArrayInputStream = new ByteArrayInputStream(buffer);
-            bufferedServletInputStream = new BufferedServletInputStream(byteArrayInputStream);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public ServletInputStream getInputStream() throws IOException {
+
+        if (WebUtil.isMultipartContent(this)) {
+            return super.getInputStream();
+        } else {
+            try {
+                byteArrayInputStream = new ByteArrayInputStream(buffer);
+                bufferedServletInputStream = new BufferedServletInputStream(byteArrayInputStream);
+            } catch (Exception ex) {
+                throw new IOException("Can not prepare input stream data.");
+            }
+            return bufferedServletInputStream;
         }
-        return bufferedServletInputStream;
     }
 }
